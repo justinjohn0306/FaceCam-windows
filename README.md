@@ -96,6 +96,11 @@ python inference.py \
 
 `--input_path` accepts either a single `.mp4`/`.mov` file or a directory of videos.
 
+For each input video `<name>.mp4`, the script saves:
+- `<name>.mp4` — the generated video
+- `<name>_input.mp4` — the cropped input video
+- `<name>_camera.mp4` — the camera condition visualisation
+
 By default, the code generates a random camera trajectory. To use a specific trajectory instead, you can customize the `random_camera_params` function in `inference.py`.
 
 ### Multi-GPU
@@ -126,27 +131,6 @@ python inference.py \
 
 This trades speed for memory — the text encoder, DiTs, and VAE are moved between
 CPU and GPU as needed instead of keeping everything resident.
-
-### All Arguments
-
-| Argument | Default | Description |
-|---|---|---|
-| `--model_dir` | `./models` | Root directory of base model weights |
-| `--ckpt_dir` | `./ckpts` | Root directory of FaceCam assets (checkpoints, gaussians.ply, face_landmarker) |
-| `--input_path` | *(required)* | Video file or directory of videos |
-| `--output_dir` | `./outputs` | Where to save results |
-| `--num_frames` | `81` | Number of frames to generate |
-| `--height` | `704` | Output video height |
-| `--width` | `480` | Output video width |
-| `--fps` | `24` | Target FPS for input sub-sampling |
-| `--num_inference_steps` | `50` | Number of denoising steps |
-| `--seed` | random | Random seed for reproducibility |
-| `--low_vram` | off | Enable CPU offloading to save GPU memory |
-
-For each input video `<name>.mp4`, the script saves:
-- `<name>.mp4` — the generated video
-- `<name>_input.mp4` — the cropped input video
-- `<name>_camera.mp4` — the camera condition visualisation
 
 ## 🎓 Training (Coming Soon)
 
