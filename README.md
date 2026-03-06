@@ -1,10 +1,12 @@
 # FaceCam: Portrait Video Camera Control via Scale-Aware Conditioning
 
+### 🏔️ CVPR 2026 🏔️
+
 [Weijie Lyu](https://weijielyu.github.io/), [Ming-Hsuan Yang](https://faculty.ucmerced.edu/mhyang/), [Zhixin Shu](https://zhixinshu.github.io/)  
 University of California, Merced - Adobe Research
 
 [![Website](https://img.shields.io/badge/Website-FaceCam?logo=googlechrome&logoColor=hsl(204%2C%2086%25%2C%2053%25)&label=FaceCam&labelColor=%23f5f5dc&color=hsl(204%2C%2086%25%2C%2053%25))](https://weijielyu.github.io/FaceCam)
-[![Paper](https://img.shields.io/badge/Paper-arXiv?logo=arxiv&logoColor=%23B31B1B&label=arXiv&labelColor=%23f5f5dc&color=%23B31B1B)](https://arxiv.org/abs/2412.17812)
+[![Paper](https://img.shields.io/badge/Paper-arXiv?logo=arxiv&logoColor=%23B31B1B&label=arXiv&labelColor=%23f5f5dc&color=%23B31B1B)](https://arxiv.org/abs/2603.05506)
 [![Video](https://img.shields.io/badge/Video-YouTube?logo=youtube&logoColor=%23FF0000&label=YouTube&labelColor=%23f5f5dc&color=%23FF0000)](https://youtu.be/QGJcwo44ziU)
 
 
@@ -139,13 +141,14 @@ CPU and GPU as needed instead of keeping everything resident.
 If you find our work useful for your research, please consider citing our paper:
 
 ```bibtex
-@InProceedings{Lyu_2025_ICCV,
-    author    = {Lyu, Weijie and Zhou, Yi and Yang, Ming-Hsuan and Shu, Zhixin},
-    title     = {FaceLift: Learning Generalizable Single Image 3D Face Reconstruction from Synthetic Heads},
-    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-    month     = {October},
-    year      = {2025},
-    pages     = {12691-12701}
+@misc{facecam,
+  title         = {FaceCam: Portrait Video Camera Control via Scale-Aware Conditioning},
+  author        = {Weijie Lyu and Ming-Hsuan Yang and Zhixin Shu},
+  year          = {2026},
+  eprint        = {2603.05506},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2603.05506},
 }
 ```
 
