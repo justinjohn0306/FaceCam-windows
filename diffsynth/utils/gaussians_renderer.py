@@ -5,7 +5,8 @@ from 3D Gaussian models.
 
 Dependencies:
     pip install numpy einops plyfile
-    pip install git+https://github.com/graphdeco-inria/diff-gaussian-rasterization
+    On Windows, run:
+    powershell -ExecutionPolicy Bypass -File .\tools\install_diff_gaussian_rasterization_windows.ps1
 """
 
 import numpy as np

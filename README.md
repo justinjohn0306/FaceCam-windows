@@ -29,8 +29,14 @@ pip install -e .
 
 # Additional required packages
 pip install xformers # Choose a version which is compatible with your PyTorch
-pip install git+https://github.com/graphdeco-inria/diff-gaussian-rasterization --no-build-isolation
+powershell -ExecutionPolicy Bypass -File .\tools\install_diff_gaussian_rasterization_windows.ps1
 pip install mediapipe==0.10.21
+```
+
+If you are not on Windows, you can still use the upstream package directly:
+
+```bash
+pip install git+https://github.com/graphdeco-inria/diff-gaussian-rasterization --no-build-isolation
 ```
 
 ### Downloads
