@@ -2,6 +2,12 @@ from safetensors import safe_open
 import torch, hashlib
 import os
 
+
+def _safetensors_open_device(device):
+    # Windows is more sensitive to opening multi-GB safetensors directly on
+    # CUDA, so read them from CPU first and rely on the later model transfer.
+    return "cpu" if os.name == "nt" else str(device)
+
 def load_state_dict(file_path, torch_dtype=None, device="cpu"):
     if isinstance(file_path, list):
         state_dict = {}
@@ -24,7 +30,7 @@ def load_state_dict_from_folder(file_path, torch_dtype=None):
 
 def load_state_dict_from_safetensors(file_path, torch_dtype=None, device="cpu"):
     state_dict = {}
-    with safe_open(file_path, framework="pt", device=str(device)) as f:
+    with safe_open(file_path, framework="pt", device=_safetensors_open_device(device)) as f:
         for k in f.keys():
             state_dict[k] = f.get_tensor(k)
             if torch_dtype is not None:

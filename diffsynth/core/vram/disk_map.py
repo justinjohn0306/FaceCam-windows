@@ -2,6 +2,12 @@ from safetensors import safe_open
 import torch, os
 
 
+def _safetensors_open_device(device):
+    # Opening large safetensors directly on CUDA can trip Windows paging-file
+    # limits during model startup, so keep the initial handle on CPU there.
+    return "cpu" if os.name == "nt" else str(device)
+
+
 class SafetensorsCompatibleTensor:
     def __init__(self, tensor):
         self.tensor = tensor
@@ -42,18 +48,25 @@ class DiskMap:
             for name in file.keys():
                 self.name_map[name] = file_id
         self.rename_dict = self.fetch_rename_dict(state_dict_converter)
+
+    def _close_files(self):
+        for file in self.files:
+            close = getattr(file, "__exit__", None)
+            if callable(close):
+                try:
+                    close(None, None, None)
+                except Exception:
+                    pass
+        self.files = []
         
     def flush_files(self):
-        if len(self.files) == 0:
-            for path in self.path:
-                if path.endswith(".safetensors"):
-                    self.files.append(safe_open(path, framework="pt", device=str(self.device)))
-                else:
-                    self.files.append(SafetensorsCompatibleBinaryLoader(path, device=self.device))
-        else:
-            for i, path in enumerate(self.path):
-                if path.endswith(".safetensors"):
-                    self.files[i] = safe_open(path, framework="pt", device=str(self.device))
+        if len(self.files) > 0:
+            self._close_files()
+        for path in self.path:
+            if path.endswith(".safetensors"):
+                self.files.append(safe_open(path, framework="pt", device=_safetensors_open_device(self.device)))
+            else:
+                self.files.append(SafetensorsCompatibleBinaryLoader(path, device=self.device))
         self.num_params = 0
 
     def __getitem__(self, name):
@@ -62,12 +75,10 @@ class DiskMap:
         param = self.files[file_id].get_tensor(name)
         if self.torch_dtype is not None and isinstance(param, torch.Tensor):
             param = param.to(self.torch_dtype)
-        if isinstance(param, torch.Tensor) and param.device == "cpu":
+        if isinstance(param, torch.Tensor) and param.device.type == "cpu":
             param = param.clone()
         if isinstance(param, torch.Tensor):
             self.num_params += param.numel()
-        if self.num_params > self.buffer_size:
-            self.flush_files()
         return param
 
     def fetch_rename_dict(self, state_dict_converter):
@@ -91,3 +102,6 @@ class DiskMap:
             return x in self.rename_dict
         else:
             return x in self.name_map
+
+    def __del__(self):
+        self._close_files()

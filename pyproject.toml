@@ -15,6 +15,7 @@ dependencies = [
     "transformers",
     "imageio",
     "imageio[ffmpeg]",
+    "plyfile",
     "safetensors",
     "einops",
     "sentencepiece",

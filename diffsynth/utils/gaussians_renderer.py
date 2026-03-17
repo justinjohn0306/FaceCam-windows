@@ -265,7 +265,6 @@ def render_opencv_cam(pc: GaussianModel, height: int, width: int, C2W: torch.Ten
         scale_modifier=1.0,
         viewmatrix=viewpoint_camera.world_view_transform,
         projmatrix=viewpoint_camera.full_proj_transform,
-        projmatrix_raw=viewpoint_camera.projection_matrix,
         sh_degree=pc.sh_degree,
         campos=viewpoint_camera.camera_center,
         prefiltered=False,

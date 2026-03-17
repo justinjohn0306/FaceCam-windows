@@ -2,6 +2,7 @@ from ..vram.initialization import skip_model_initialization
 from ..vram.disk_map import DiskMap
 from ..vram.layers import enable_vram_management
 from .file import load_state_dict
+import os
 import torch
 
 
@@ -35,10 +36,11 @@ def load_model(model_class, path, config=None, torch_dtype=torch.bfloat16, devic
         # Sometimes a model file contains multiple models,
         # and DiskMap can load only the parameters of a single model,
         # avoiding the need to load all parameters in the file.
-        if use_disk_map:
+        if use_disk_map and os.name != "nt":
             state_dict = DiskMap(path, device, torch_dtype=torch_dtype)
         else:
-            state_dict = load_state_dict(path, torch_dtype, device)
+            load_device = "cpu" if os.name == "nt" else device
+            state_dict = load_state_dict(path, torch_dtype, load_device)
         # Why do we use `state_dict_converter`?
         # Some models are saved in complex formats,
         # and we need to convert the state dict into the appropriate format.
